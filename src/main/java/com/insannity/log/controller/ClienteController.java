@@ -34,7 +34,7 @@ public class ClienteController {
 	
 	@GetMapping
     public List<Cliente> listar(){
-       return repository.findByNome("Joao");
+       return repository.findAll();
     }
 	
 	@GetMapping("/{id}")
