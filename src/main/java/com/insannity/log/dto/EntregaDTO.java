@@ -16,7 +16,7 @@ public class EntregaDTO {
 	
 	private Long id;
 	private ClienteDTO cliente;
-	private DestinatarioDTO destinario;
+	private DestinatarioDTO destinatario;
 	private BigDecimal taxa;
 	private StatusEntrega status;
 	private OffsetDateTime dataPedido;

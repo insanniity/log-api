@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.insannity.log.dto.EntregaDTO;
 import com.insannity.log.entities.Entrega;
+import com.insannity.log.input.EntregaInput;
 import com.insannity.log.mapper.EntregaMapper;
 import com.insannity.log.repositories.EntregaRepository;
 import com.insannity.log.services.SolicitacaoEntregaService;
@@ -43,8 +44,9 @@ public class EntregaController {
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public EntregaDTO solicitar(@Valid @RequestBody Entrega entrega) {
-		Entrega entregaSolicitada = service.solicitar(entrega);
+	public EntregaDTO solicitar(@Valid @RequestBody EntregaInput entregaInput) {		
+		Entrega novaEntrega = mapper.toEntity(entregaInput);		
+		Entrega entregaSolicitada = service.solicitar(novaEntrega);
 		return mapper.toDto(entregaSolicitada);
 	}
 	
