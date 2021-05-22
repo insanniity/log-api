@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,6 +21,7 @@ import com.insannity.log.entities.Entrega;
 import com.insannity.log.input.EntregaInput;
 import com.insannity.log.mapper.EntregaMapper;
 import com.insannity.log.repositories.EntregaRepository;
+import com.insannity.log.services.FinalizarEntregaService;
 import com.insannity.log.services.SolicitacaoEntregaService;
 
 @RestController
@@ -35,6 +37,9 @@ public class EntregaController {
 	@Autowired
 	private EntregaMapper mapper;
 	
+	@Autowired
+	private FinalizarEntregaService finalizaEntregaService;
+	
 	
 	@GetMapping
     public List<EntregaDTO> listar(){
@@ -48,12 +53,17 @@ public class EntregaController {
 		Entrega novaEntrega = mapper.toEntity(entregaInput);		
 		Entrega entregaSolicitada = service.solicitar(novaEntrega);
 		return mapper.toDto(entregaSolicitada);
-	}
-	
+	}	
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<EntregaDTO> buscar (@PathVariable Long id) {
 		return repository.findById(id).map(entrega -> ResponseEntity.ok(mapper.toDto(entrega))).orElse(ResponseEntity.notFound().build());		
+	}
+	
+	@PutMapping("/{id}/finalizacao")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void finalizar (@PathVariable Long id) {
+		finalizaEntregaService.finalizar(id);
 	}
 	
 	
